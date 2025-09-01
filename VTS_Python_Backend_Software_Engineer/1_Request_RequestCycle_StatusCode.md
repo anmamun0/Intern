@@ -42,7 +42,7 @@ def my_view(request):
 ```
 
 output
-```json
+```html
 Path: /hello/
 Full Path: /hello/?q=django
 Method: GET
@@ -113,14 +113,14 @@ def test_responses(request):
 Django’s request-response cycle is the process from the moment the user sends a request to when Django returns a response.
 
 Step by step:
-Browser sends request → User opens http://example.com/home/.
-URL routing → Django checks urls.py to find the matching view.
-Middleware processing → Optional pre-processing (authentication, logging, sessions, etc.).
-View function execution → Your function handles the request.
-Response returned → Django sends an HttpResponse back.
-Middleware post-processing → Optional modification of the response.
-Browser receives response → Page renders.
-Diagram (simplified):
+- Browser sends request → User opens http://example.com/home/.
+- URL routing → Django checks urls.py to find the matching view.
+- Middleware processing → Optional pre-processing (authentication, logging, sessions, etc.).
+- View function execution → Your function handles the request.
+- Response returned → Django sends an HttpResponse back.
+- Middleware post-processing → Optional modification of the response.
+- Browser receives response → Page renders.
+- Diagram (simplified):
 
 ```js
 Browser ----> URL Resolver ----> Middleware (pre) ----> View ----> Middleware (post) ----> Browser
