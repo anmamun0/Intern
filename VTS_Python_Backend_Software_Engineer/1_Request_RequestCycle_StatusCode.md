@@ -1,7 +1,7 @@
 
 
 
-```
+```python
 views.py
 from django.http import HttpResponse
 
@@ -106,9 +106,13 @@ def test_responses(request):
 </h6>
 
 
+---
 
 
-## 2️⃣ Request-Response Cycle in Django
+<br>
+<br>
+
+#  2️⃣ Request-Response Cycle in Django
 
 Django’s request-response cycle is the process from the moment the user sends a request to when Django returns a response.
 
@@ -125,3 +129,79 @@ Step by step:
 ```js
 Browser ----> URL Resolver ----> Middleware (pre) ----> View ----> Middleware (post) ----> Browser
 ```
+
+---
+
+
+<br>
+<br>
+
+# 3️⃣ Django HTTP Status Codes Guide
+
+This guide explains **HTTP status codes** and how to use them in **Django**.
+
+---
+
+## 1️⃣ 1xx – Informational
+
+**Meaning:** Request received, continuing process.  
+
+**Common codes:**
+- `100 Continue`
+- `101 Switching Protocols`  
+
+## 2️⃣ 2xx – Success
+
+**Meaning:** Request was successfully received, understood, and accepted.  
+
+**Common codes:**
+- `200 OK` → Standard success
+- `201 Created` → New resource created
+- `202 Accepted` → Request accepted but not processed yet
+ 
+## 3️⃣ 3xx – Redirection 
+**Meaning:** Client must take additional action to complete the request (usually follow another URL).  
+
+**Common codes:**
+- `301 Moved Permanently` → URL has changed permanently  
+- `302 Found` → Temporary redirect  
+- `304 Not Modified` → Cached version is valid  
+
+## 4️⃣ 4xx – Client Error
+
+**Meaning:** The client sent a bad request.  
+**Common codes:**
+- `400 Bad Request` → Invalid syntax or missing data  
+- `401 Unauthorized` → Authentication required  
+- `403 Forbidden` → Access denied  
+- `404 Not Found` → Resource not found  
+ 
+
+## 5️⃣ 5xx – Server Error
+
+**Meaning:** Server failed to fulfill a valid request.  
+**Common codes:**
+- `500 Internal Server Error` → Generic server error  
+- `502 Bad Gateway` → Invalid response from upstream server  
+- `503 Service Unavailable` → Server overloaded or down  
+ 
+Every response in Django comes with an HTTP status code.
+
+| Code | Meaning                    | Example in Django                         |
+| ---- | -------------------------- | ----------------------------------------- |
+| 200  | OK                         | `HttpResponse("Success")`                 |
+| 301  | Moved Permanently          | `HttpResponseRedirect("/new-url/")`       |
+| 302  | Found / Temporary Redirect | `HttpResponseRedirect("/temp-url/")`      |
+| 400  | Bad Request                | `HttpResponseBadRequest("Missing data")`  |
+| 403  | Forbidden                  | `HttpResponseForbidden("Access denied")`  |
+| 404  | Not Found                  | `HttpResponseNotFound("Page not found")`  |
+| 500  | Internal Server Error      | `HttpResponseServerError("Server error")` |
+
+
+| Class | Range   | Meaning       |
+| ----- | ------- | ------------- |
+| 1xx   | 100–199 | Informational |
+| 2xx   | 200–299 | Success       |
+| 3xx   | 300–399 | Redirection   |
+| 4xx   | 400–499 | Client Error  |
+| 5xx   | 500–599 | Server Error  |
