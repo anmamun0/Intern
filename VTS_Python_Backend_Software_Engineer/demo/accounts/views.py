@@ -11,4 +11,11 @@ from django.http import (
                          )
 # Create your views here.
 def my_view(request):
-    return HttpResponse(f"hello this is test")
+    print(request.method)      # GET, POST
+    print(request.path)        # /home/
+    print(request.GET)         # Query parameters
+    
+    print(request.POST)        # Form data
+    print(request.COOKIES)     # Cookies
+    print(request.headers)     # HTTP headers
+    return HttpResponse("Check console for request info")

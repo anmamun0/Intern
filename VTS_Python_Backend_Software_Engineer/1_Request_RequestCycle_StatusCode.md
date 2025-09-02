@@ -105,6 +105,17 @@ def test_responses(request):
 | `HttpResponseServerError` | 500         | Server error            |
 </h6>
 
+## 1️⃣ Request in Django
+
+When a user visits a URL, the browser sends an HTTP request to the server.
+#### Django wraps this into a request object containing:
+- Method: GET, POST, PUT, DELETE, etc.
+- Path: The requested URL path (e.g., /home/)
+- Headers: Browser and client info (User-Agent, Cookie, Authorization)
+- GET Parameters: Query data from URL (?q=python)
+- POST Data: Form submissions
+- Cookies: Client-side cookies
+- Meta: Server/environment info (REMOTE_ADDR, HTTP_HOST)
 
 ---
 
