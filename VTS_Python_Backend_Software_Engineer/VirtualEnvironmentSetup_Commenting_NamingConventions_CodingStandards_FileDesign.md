@@ -66,7 +66,8 @@ venv/
 --- 
 <br>
 <br>
-
+<br>
+<br>
 
 ## 2️⃣ Commenting
 
@@ -99,10 +100,8 @@ def add(a, b):
     """
     return a + b
 ```
-## 3️⃣ Naming Conventions
-
+### Naming Conventions
 Python follows PEP8 naming rules: Coding Standards (PEP8)
-
 - `Indentation:` Use 4 spaces per indentation level, never tabs.
 - `Maximum Line Length:` Limit code lines to 79 characters, comments/docstrings to 72.
 - `Blank Lines:` Use 2 blank lines before top-level functions/classes, 1 inside classes.
@@ -117,7 +116,7 @@ Python follows PEP8 naming rules: Coding Standards (PEP8)
 
 Perfect! Here’s a full, easy-to-follow summary of all main PEP8 rules with examples. I’ve organized them by category so you can use it as a coding checklist.
 
-### 1️⃣ Indentation
+### 1. Indentation
 
 Use 4 spaces per indentation level. Never use tabs.
 ```
@@ -132,7 +131,7 @@ def my_function():
 		print("Hello")
 ```
 
-### 2️⃣ Maximum Line Length
+### 2. Maximum Line Length
 
 Limit lines to 79 characters for code, 72 characters for comments/docstrings.
 ```
@@ -144,7 +143,7 @@ total = (a + b + c + d +
 total = a + b + c + d + e + f + g + h + i + j + k + l + m
 ```
 
-### 3️⃣ Blank Lines
+### 3. Blank Lines
 
 Top-level functions/classes: 2 blank lines before.
 
@@ -158,7 +157,7 @@ class MyClass:
         pass
 ```
 
-4️⃣ Imports
+### 4. Imports
 
 Order of imports: Standard library → Third-party → Local application imports.
 
@@ -176,7 +175,7 @@ from myapp import utils
 import sys, os, requests
 ```
 
-5️⃣ Whitespace in Expressions
+### 5. Whitespace in Expressions
 
 Avoid extra spaces in these situations:
 ```
@@ -193,7 +192,7 @@ After commas, colons, semicolons: Always one space:
 ```
 my_list = [1, 2, 3]
 ```
-6️⃣ Naming Conventions
+### 6. Naming Conventions
 
 <h6>
   
@@ -207,7 +206,7 @@ my_list = [1, 2, 3]
 | Packages      | lowercase   | myapp            |
 </h6>
 
-### 7️⃣ Programming Recommendations
+### 7. Programming Recommendations
 
 Avoid multiple statements on one line.
 ```
@@ -231,7 +230,7 @@ if x in [1, 2, 3]:
     pass
 ```
 
-8️⃣ Comments
+### 8. Comments
 
 Use inline comments sparingly: after code, separated by two spaces.
 ```
@@ -258,7 +257,7 @@ def add(a, b):
     """
     return a + b
 ```
-### 9️⃣ String Quotes
+### 9. String Quotes
 
 Pick single ' or double " consistently in a project.
 ```
@@ -269,7 +268,7 @@ greeting = 'Hello'
 # Bad
 name = "Alice'
 ```
-## 🔟 Other Guidelines
+## 10. Other Guidelines
 
 Avoid trailing spaces.
 - Use consistent encoding (UTF-8).
@@ -294,6 +293,9 @@ flake8 myfile.py
 ---
 <br>
 <br>
+<br>
+<br>
+
 
 ## 5️⃣ File / Project Design
 
@@ -398,33 +400,4 @@ flake8 your_file.py
 # Example: check all Python files in a project folder
 flake8 myproject/
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
