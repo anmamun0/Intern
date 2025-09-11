@@ -1,0 +1,28 @@
+1 Sep: 
+Request, resposne cycle, status code
+Python ar basic
+
+2 Sep:
+virtual env setup, commenting, naming, coding standard, file design
+#Learning > Environmental variable setup |  commenting  | Naming Convention | File design
+#Learning > OOP 4 pillars | Abstraction,  Encapsulation,  Polymorphism,  Inheritance | Decorators|  Composition  | Mixins | Metaclass | Duck Typing
+#Learning > OOP Design Principal | DRY | KISS | YAGNI | Law Of demeter |
+
+3 Sep:
+#Learning | Web | HTML,CSS,
+#Learning | JavaScript | Object, iteration methods, Event, Form Handling, 
+#Learning | JQuery | Selectors, Events, Animations, DOM Manipulation, Forms, jQuery AJAX, etc ...
+
+4 Sep:
+#Learning | Django Admin|  Slug, InlineModel, Customize Header, Action, Filter Search
+#Learning | Django Group Permission | Model setup, Add user to group, Custom permission class, DRF integration
+
+5>
+6 > Friday
+
+7 Sep:
+#Learning | Model |Model Forward Access, Reverse Access
+#Learning | Migrate| Speacific Migrate, 
+#Learning | ORM | Lookup access, Q Object Query
+
+
