@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+
+
 
 # Application definition
 
@@ -93,6 +97,14 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+
+
+
+
+
+
 
 # DATABASES = {
 #     'default': {

@@ -1,13 +1,10 @@
-from django.urls import path,include
-from .views import RegisterView
-from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken.views import obtain_auth_token
-0
-
-router = DefaultRouter()
-router.register('register',RegisterView)
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from .views import RegisterView, DashboardView
 
 urlpatterns = [
-    path('',include(router.urls)),
-    path('login/',obtain_auth_token,name="login"),
+    path("register/", RegisterView.as_view(), name="register"),
+    path("login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"), 
+    path("dashboard/", DashboardView.as_view(), name="dashboard"),
 ]

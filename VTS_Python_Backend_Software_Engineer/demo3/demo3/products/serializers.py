@@ -18,3 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
         
         return Product.objects.create(user=user, **validated_data)
 
+# class CategorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Category
+#         fields = "__all__"

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-6">
+
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-3xl font-bold text-gray-800">Your Cart</h2>
+      <div class="space-x-2">
+        <a href="{% url 'dashboard' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow">Dashboard</a>
+        <a href="{% url 'product_list' %}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 shadow">Product List</a>
+      </div>
+    </div>
+
+    <!-- Cart Items -->
+    {% if cart.items.all %}
+    <div class="space-y-4">
+      {% for item in cart.items.all %}
+      <div class="bg-white shadow rounded p-4 flex justify-between items-center">
+        <div>
+          <h3 class="font-semibold text-gray-700">{{ item.product.name }}</h3>
+          <p class="text-gray-500">Quantity: {{ item.quantity }}</p>
+        </div>
+        <div class="text-right">
+          <p class="font-semibold text-gray-800">${{ item.subtotal }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Total Price -->
+    <div class="mt-6 flex justify-between items-center bg-white shadow rounded p-4">
+      <span class="text-xl font-semibold text-gray-700">Total:</span>
+      <span class="text-2xl font-bold text-green-600">${{ cart.total_price }}</span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-6 flex space-x-4">
+      <form method="post" action="{% url 'clear_cart' %}">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 shadow">
+          Clear Cart
+        </button>
+      </form>
+
+      <form method="post" action="{% url 'place_order' %}">
+        {% csrf_token %}
+        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 shadow">
+          Place Order
+        </button>
+      </form>
+    </div>
+
+    {% else %}
+    <p class="text-gray-500 text-center py-6 bg-white shadow rounded">Your cart is empty.</p>
+    {% endif %}
+
+  </div>
+
+</body>
+</html>

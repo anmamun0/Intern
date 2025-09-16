@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-6">
+
+  <div class="max-w-6xl mx-auto pt-12">
+
+   
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-3xl font-bold text-gray-800">Products</h2>
+      <div class="space-x-2 text-xs">
+
+          <a href="{% url 'dashboard' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow">Dashboard</a>
+          <a href="{% url 'product_add' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow">Upload Product</a>
+          
+          <a href="{% url 'view_cart' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 shadow">
+              View Cart
+            </a>
+        </div>
+    </div>
+
+
+    <div class="bg-white shadow rounded overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Product</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Category</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Stock</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Price</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Quantity</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Description</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Action</th>
+          </tr>
+        </thead>
+   <tbody class="divide-y divide-gray-200">
+  {% for product, form in product_forms %}
+  <tr>
+    <td class="px-6 py-4">{{ product.name }}</td>
+    <td class="px-6 py-4">{{ product.category }}</td>
+    <td class="px-6 py-4">
+      {% if product.stock > 10 %}
+        <span class="px-2 py-1 text-sm font-semibold text-white bg-green-500 rounded">
+          In Stock: {{ product.stock }}
+        </span>
+      {% elif product.stock > 0 %}
+        <span class="px-2 py-1 text-sm font-semibold text-white bg-yellow-500 rounded">
+          Low: {{ product.stock }}
+        </span>
+      {% else %}
+        <span class="px-2 py-1 text-sm font-semibold text-white bg-red-500 rounded">
+          Out of Stock
+        </span>
+      {% endif %}
+    </td>
+    <td class="px-6 py-4 font-bold text-green-600">${{ product.price }}</td>
+    
+    <td class="px-3 py-4">
+      <form method="post" action="{% url 'add_to_cart' product.id %}">
+        {% csrf_token %}
+        {{ form.quantity }}
+    </td>
+    <td class="px-3  py-4">{{ form.description }}</td>
+    <td class="px-6 py-4 flex space-x-2 text-xs">
+        <button type="submit" 
+          class="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 shadow">
+          Add to Cart
+        </button>
+      </form>
+
+      {% if product.user == request.user %}
+        <a href="{% url 'product_edit' product.id %}" 
+           class="bg-yellow-500 text-white px-2 py-2 rounded hover:bg-yellow-600 shadow">
+          Edit
+        </a>
+      {% endif %}
+    </td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="7" class="px-6 py-4 text-gray-500 text-center">
+      No products available.
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+      </table>
+    </div>
+
+  </div>
+
+</body>
+</html>

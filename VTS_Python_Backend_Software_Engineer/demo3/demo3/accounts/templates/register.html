@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <!-- Header -->
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">Register</h2>
+
+    <!-- Registration Form -->
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="flex flex-col">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.errors %}
+            <p class="text-red-500 text-sm mt-1">{{ field.errors|striptags }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 shadow flex items-center justify-center gap-2">
+        <!-- Register Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Register
+      </button>
+    </form>
+
+    <!-- Login Link -->
+    <p class="mt-4 text-center text-gray-600">
+      Already have an account? 
+      <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Login</a>
+    </p>
+  </div>
+
+</body>
+</html>
