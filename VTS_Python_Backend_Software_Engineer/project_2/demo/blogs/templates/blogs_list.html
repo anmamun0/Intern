@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Blogs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+<header class="bg-white  ">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+        <!-- Logo / Blog Name -->
+        <h1 class="text-2xl font-bold text-blue-600">My Blog</h1>
+
+        <!-- Navbar Links -->
+        <nav class="space-x-6 hidden md:flex">
+            <a href="#" class="text-gray-700 hover:text-blue-600">Home</a>
+            <a href="#" class="text-gray-700 hover:text-blue-600">About</a>
+            <a href="#" class="text-gray-700 hover:text-blue-600">Contact</a>
+        </nav>
+
+        <!-- User + Actions -->
+        <div class="flex items-center space-x-4">
+            <span class="text-gray-600 hidden sm:block">
+                Welcome, <span class="font-semibold text-blue-600">{{ current_user.username }}</span>
+            </span>
+ 
+            <!-- Logout Button -->
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</header>
+
+
+    <!-- Main Body -->
+    <main class="container mx-auto px-6 py-10">
+        <div>
+            <div class="flex gap-2 justify-between  mb-10  ">
+                <h2 class="text-2xl px-4 font-boldtext-gray-700">All Blogs</h2>
+                            <!-- Write Blog Button -->
+            <a href="{% url 'write_blog' %}" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300">
+                + Write Blog
+            </a> 
+            </div>
+        </div>
+
+        {% for blog in blogs %}
+        <div
+            class="bg-white shadow-md rounded-xl p-6 mb-8 hover:shadow-lg transition duration-300 border border-gray-200">
+            <!-- Blog Title -->
+            <a href="{% url 'blog_detail' blog.pk %}" class="block">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3 hover:text-blue-600">{{ blog.title }}</h3>
+            </a>
+
+            <!-- Blog Content (no image here) -->
+            <p class="text-gray-600 mb-4 leading-relaxed">
+                {{ blog.content|truncatechars:150 }}
+            </p>
+
+            <!-- Likes & Comment Count -->
+            <div class="flex items-center justify-between text-sm text-gray-500">
+                <span>Total Comments: <strong>{{ blog.total_comments }}</strong></span>
+                <span class="text-blue-600 font-medium">{{ blog.likes.count }} Likes</span>
+            </div>
+        </div>
+        {% endfor %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t py-6 mt-12">
+        <div class="container mx-auto text-center text-gray-500 text-sm">
+            © 2025 My Blog. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
+</html>
