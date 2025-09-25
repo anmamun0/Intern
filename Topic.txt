@@ -1,3 +1,5 @@
+// sojib
+
 1 Sep: 
 Request, resposne cycle, status code
 Python ar basic
@@ -17,7 +19,7 @@ virtual env setup, commenting, naming, coding standard, file design
 #Learning | Django Admin|  Slug, InlineModel, Customize Header, Action, Filter Search
 #Learning | Django Group Permission | Model setup, Add user to group, Custom permission class, DRF integration
 
-5>
+5 >
 6 > Friday
 
 7 Sep:
@@ -25,4 +27,38 @@ virtual env setup, commenting, naming, coding standard, file design
 #Learning | Migrate| Speacific Migrate, 
 #Learning | ORM | Lookup access, Q Object Query
 
+8 Sep: Dhaka to Sylhet
+
+9 Sep:
+#Learning | URL|Path, re_path, include, name parameter, URL namespaces
+#Learning | View | FBV,CBV, render, redirect
+#Learning | Form,| Form Rendering, Form Template , Validation and Widgets 
+
+10 Sep:
+Project-1
+E-commerce project koren ekta
+product add, update, cart a add update checkout, thakbe
+
+----------------------------------------------------------------------------
+
+15 Sep:
+#Learning | SessionAuth | Login, Logout, Register with Session Auth
+#Learning | TokenAuth |  Login, Logout, Register with Token Auth
+
+
+16 Sep:
+#Learning | FileStorage | Upload in Root File, Upload in Apps File..
+#Learning | Settings.py | Meaning of all used code in settings.py
+#Learning | Signals.py  | post_save, pre_save ,post_delete
+
+17 Sep: 
+#Learning | Middleware | read 2 blog geeksforgeeks and djangoproject. 
+
+18: Sep
+#Learning | Middleware| Built-in Middleware, Custom Middleware,
+#Learning | Context Process | request, user, messages , Custom context processor তৈরি করে global context template এ inject করা
+#Learning | Migrations Folder Management| makemigrations, migrate, showmigrations
+
+19 Sep:
+Project 2:
 
