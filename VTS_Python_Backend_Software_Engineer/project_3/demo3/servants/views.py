@@ -107,9 +107,14 @@ class LeaveRequestCreateView(LoginRequiredMixin, CreateView):
     template_name = 'leave_request_form.html'
     success_url = reverse_lazy('leave-request-list')
 
-    def form_valid(self, form): 
+    def form_valid(self, form):  
         form.instance.agent = self.request.user
         return super().form_valid(form)
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class) 
+        form.instance.agent = self.request.user
+        return form
 
  
 class LeaveRequestListView(LoginRequiredMixin, ListView):
@@ -125,6 +130,8 @@ class LeaveRequestListView(LoginRequiredMixin, ListView):
 
 
 #  ---------------------- 
+  
+
 class LeaveRequestStatusUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = LeaveRequest
     fields = ['status']
@@ -133,3 +140,17 @@ class LeaveRequestStatusUpdateView(LoginRequiredMixin, UserPassesTestMixin, Upda
 
     def test_func(self): 
         return self.request.user.groups.filter(name='manager').exists()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        leave_request = self.get_object()
+        agent_user = leave_request.agent
+ 
+        all_leaves = LeaveRequest.objects.filter(agent=agent_user).order_by('-created_at')
+        context['agent_leave_history'] = all_leaves
+ 
+        context['approved_count'] = all_leaves.filter(status='approved').count()
+        context['cancelled_count'] = all_leaves.filter(status='canceled').count()   
+
+        return context
+
