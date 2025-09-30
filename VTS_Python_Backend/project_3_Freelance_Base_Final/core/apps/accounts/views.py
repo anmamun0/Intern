@@ -1,12 +1,22 @@
 from django.shortcuts import render ,redirect
+from django.urls import reverse_lazy  
 # Create your views here.
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from django.contrib import messages  
+from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
+from django.utils.encoding import force_str , force_bytes
+from django.contrib.auth.tokens import default_token_generator 
+from django.contrib.sites.shortcuts import get_current_site 
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.views.generic.edit import CreateView, View
-from django.contrib.auth.models import User 
 from django.contrib.auth import login
+from django.contrib.auth.models import User 
 from .forms import RegisterForm 
-from django.urls import reverse_lazy  
 
+# ----------------------------------------------- 
+#  User Registration
+# ----------------------------------------------- 
 class RegisterView(CreateView):
     model = User 
     form_class = RegisterForm
@@ -22,18 +32,11 @@ class RegisterView(CreateView):
         res = super().form_valid(form)
         # login(self.request,self.object)
         return res   
-    
-from django.contrib import messages  
-from django.utils.http import urlsafe_base64_decode
-from django.utils.encoding import force_str
-from django.contrib.auth.tokens import default_token_generator 
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-
+     
 # ----------------------------------------------- 
+#  Email Verification Process Get views
+# ----------------------------------------------- 
+
 def email_verification_pending(request):
     user_id = request.session.get('pending_user_id')
     if not user_id:
@@ -67,11 +70,11 @@ def send_verification_email(request):
 
     return render(request, "accounts/email_verification_sent.html")
 
-
-# -----------------------------------------------
-
-
  
+
+# ----------------------------------------------- 
+#  Email Verification Conformation POST views
+# -----------------------------------------------  
 
 class VerifyEmailView(View):
     def get(self, request, uidb64, token):
