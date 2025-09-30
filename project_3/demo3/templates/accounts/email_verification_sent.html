@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Verification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white shadow-lg rounded-2xl max-w-lg w-full p-8">
+      
+      <!-- Header -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+        Verify Your Email
+      </h2>
+
+      <!-- Greeting -->
+      <p class="text-gray-700 mb-4">
+        Hello <span class="font-semibold">{{ user.username }}</span>,
+      </p>
+
+      <!-- Instructions -->
+      <p class="text-gray-600 mb-6">
+        Please click the button below to verify your email and activate your account:
+      </p>
+
+      <!-- Button -->
+      <div class="text-center">
+        <a href="{{ verification_link }}" 
+           class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold 
+                  hover:bg-blue-700 transition duration-200">
+          Verify Email
+        </a>
+      </div>
+
+      <!-- Fallback plain link -->
+      <p class="text-gray-500 text-sm mt-6">
+        If the button doesn’t work, copy and paste this link into your browser:
+      </p>
+      <p class="text-blue-600 text-sm break-words">
+        {{ verification_link }}
+      </p>
+
+      <!-- Footer -->
+      <p class="text-gray-400 text-xs mt-8 text-center">
+        If you did not register, you can safely ignore this email.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

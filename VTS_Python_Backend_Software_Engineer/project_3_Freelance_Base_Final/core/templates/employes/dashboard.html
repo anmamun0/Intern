@@ -1,0 +1,122 @@
+
+
+  {% extends 'employes/base.html' %}
+
+{% block content %}
+
+    <div class=" ">
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+
+            <!-- Task Section -->
+            <section class="mb-6">
+                <h2 class="text-xl font-semibold mb-2">Tasks</h2>
+
+                {% if is_agent %}
+                <div class="mb-4">
+                    <a href="{% url 'create_task' %}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">Create New Task</a>
+                </div>
+                {% endif %}
+
+                <div class="overflow-x-auto mb-6">
+                    <table class="min-w-full bg-white rounded shadow overflow-hidden">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="py-2 px-4 text-left">Title</th>
+                                <th class="py-2 px-4 text-left">Status</th>
+                                <th class="py-2 px-4 text-left">Created By</th>
+                                <th class="py-2 px-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-2 px-4">{{ task.title }}</td>
+                                <td class="py-2 px-4 capitalize">{{ task.status }}</td>
+                                <td class="py-2 px-4">{{ task.created_by.username }}</td>
+                                <td class="py-2 px-4 space-x-2">
+                                    {% if is_agent %}
+                                        {% if task.status == 'pending' or task.status == 'canceled' %}
+                                            <a href="{% url 'update_task' task.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded">Update</a>
+                                            <form class="inline" method="post" action="{% url 'delete_task' task.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">Delete</button>
+                                            </form>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if is_manager %}
+                                        {% if task.status != 'approved' %}
+                                            <a href="{% url 'change_task_status' task.id %}" class="bg-purple-500 hover:bg-purple-600 text-white px-2 py-1 rounded">Change Status</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="py-4 px-4 text-center text-gray-500">No tasks available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Leave Request Section -->
+            <section>
+                <h2 class="text-xl font-semibold mb-2">Leave Requests</h2>
+
+                <!-- Agent: Create Leave Request -->
+                {% if is_agent %}
+                <div class="mb-4">
+                    <a href="{% url 'leave-request-create' %}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">Request Leave</a>
+                </div>
+                {% endif %}
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded shadow overflow-hidden">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="py-2 px-4 text-left">Agent</th>
+                                <th class="py-2 px-4 text-left">Start Date</th>
+                                <th class="py-2 px-4 text-left">End Date</th>
+                                <th class="py-2 px-4 text-left">Reason</th>
+                                <th class="py-2 px-4 text-left">Status</th>
+                                {% if is_manager %}
+                                <th class="py-2 px-4 text-left">Actions</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leave in leave_requests %}
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-2 px-4">{{ leave.agent.username }}</td>
+                                <td class="py-2 px-4">{{ leave.start_date }}</td>
+                                <td class="py-2 px-4">{{ leave.end_date }}</td>
+                                <td class="py-2 px-4">{{ leave.reason }}</td>
+                                <td class="py-2 px-4 capitalize">{{ leave.status }}</td>
+
+                                {% if is_manager %}
+                                <td class="py-2 px-4 space-x-2">
+                                    {% if leave.status != 'approved' %}
+                                        <a href="{% url 'leave-request-status-update' leave.id %}" class="bg-purple-500 hover:bg-purple-600 text-white px-2 py-1 rounded">Approve/Cancel</a>
+                                    {% endif %}
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="{% if is_manager %}6{% else %}5{% endif %}" class="py-4 px-4 text-center text-gray-500">No leave requests.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+  {% endblock %}
