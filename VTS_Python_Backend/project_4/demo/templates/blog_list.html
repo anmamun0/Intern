@@ -1,0 +1,14 @@
+<h2>All Blogs</h2>
+{% for blog in blogs %}
+  <div>
+    <h3>{{ blog.title }}</h3>
+    <p>By {{ blog.author.username }} on {{ blog.created_at }}</p>
+    <p>{{ blog.content }}</p>
+    {% if blog.image %}
+      <img src="{{ blog.image.url }}" alt="Blog image" width="200">
+    {% endif %}
+    <p>Likes: {{ blog.likes.count }}</p>
+  </div>
+{% empty %}
+  <p>No blogs yet.</p>
+{% endfor %}
