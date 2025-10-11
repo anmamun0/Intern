@@ -30,8 +30,9 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'accounts.CustomUser' 
 # Application definition
 CUSTOM_APPS = [
-    "apps.accounts",
-    "apps.courses"
+    "accounts",
+    "apps.courses",
+    "apps.enrollments",
 ]
 
 INSTALLED_APPS = (
@@ -54,6 +55,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login'
+
 
 ROOT_URLCONF = 'core.urls'
 
