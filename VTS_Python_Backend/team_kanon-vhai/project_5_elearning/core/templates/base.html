@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}E-Learning Platform{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+</head>
+
+<body class="bg-gradient-to-br from-gray-200 via-gray-100 to-blue-100 flex flex-col min-h-screen">
+
+  <!-- Header -->
+<header class="bg-white/40 backdrop-blur-md shadow-md sticky top-0 z-50">
+  <div class="container mx-auto flex justify-between items-center py-4 px-6">
+
+    <!-- Logo + Tagline -->
+    <div class="flex-col items-center gap-4">
+      <div class="text-2xl font-bold text-teal-700 drop-shadow-sm">
+          <a href="/" class="flex items-center space-x-1 group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center transform group-hover:rotate-6 transition-transform duration-300">
+                            <span class="text-white font-bold text-xl">E</span>
+                        </div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">Learn</span>
+                    </a>
+                    
+      </div>
+      <span class="text-gray-600 text-sm hidden sm:inline">Learn Anytime, Anywhere</span>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="flex-1 mx-6 hidden md:flex items-center justify-center">
+      <input type="text" placeholder="Search courses..." 
+             class="w-2/3 opacity-40 placeholder:text-black px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400 shadow-sm" />
+     
+    </div>
+<!-- Navigation + Profile -->
+<div class="flex items-center space-x-4">
+
+  <nav class="hidden md:flex items-center space-x-1">
+    <a href="{% url 'courses' %}" class="nav-link px-4 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200">Courses</a> 
+  </nav>
+
+  <!-- Notification Icon -->
+  {% if user.is_authenticated %}
+  <div class="relative">
+    <button class="p-2 text-gray-600 hover:text-teal-600 hover:bg-teal-50 rounded-full transition-all duration-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+      </svg>
+    </button>
+    <!-- Notification badge -->
+    <span class="absolute top-1 right-1 flex h-4 w-4">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-4 w-4 bg-red-500 items-center justify-center text-white text-xs font-semibold">0</span>
+    </span>
+  </div>
+  {% endif %}
+
+  <!-- Profile Dropdown -->
+  {% if user.is_authenticated %}
+  <div class="relative group">
+    <button class="flex items-center space-x-3 px-3 py-2 rounded-full hover:bg-white/60 transition-all duration-200">
+      {% if user.profile_image %}
+        <img src="{{ user.profile_image.url }}" alt="Profile" class="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover ring-2 ring-teal-500">
+      {% else %}
+        <img src="https://www.pngitem.com/pimgs/m/78-786293_1240-x-1240-0-avatar-profile-icon-png.png" alt="Profile" class="w-10 h-10 rounded-full border-2 border-white shadow-md object-cover ring-2 ring-teal-500">
+      {% endif %} 
+      <svg class="h-4 w-4 text-gray-600 group-hover:text-teal-600 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </button>
+    
+    <!-- Dropdown menu -->
+    <div class="absolute right-0 mt-2 w-56 bg-white/90 backdrop-blur-lg rounded-xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+      <div class="px-4 py-3 border-b border-gray-100">
+        <p class="text-sm font-semibold text-gray-800">{{ user.username|default:user.first_name }}</p>
+        <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
+      </div>
+      <div class="py-2">
+        <a href="{% url 'profile' %}" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-colors duration-150">
+          <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          Profile
+        </a>
+      </div>
+      <div class="border-t border-gray-100 py-2">
+        <a href="{% url 'logout' %}" class="flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150">
+          <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          Logout
+        </a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+    <a href="{% url 'login' %}" class="px-4 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200">Login</a>
+    <a href="{% url 'register' %}" class="px-3 py-2  bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium rounded-full hover:shadow-lg hover:scale-105 transition-all duration-200">Register</a>
+  {% endif %}
+</div>
+
+<!-- Mobile Hamburger Menu -->
+<div class="md:hidden flex items-center">
+  <button onclick="toggleMobileMenu()" class="p-2 text-gray-600 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-all duration-200">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+</div>
+
+<style>
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #0d9488, #14b8a6);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+</style>
+
+<script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) {
+    menu.classList.toggle('active');
+  }
+}
+</script>
+
+  </div>
+</header>
+
+
+  <!-- Notification Messages -->
+  <div class="container mx-auto px-6 mt-4">
+    {% if messages %}
+      <div class="space-y-2">
+        {% for message in messages %}
+          <div class="p-3 rounded-lg text-white 
+                      {% if message.tags == 'success' %} bg-green-500 
+                      {% elif message.tags == 'error' %} bg-red-500 
+                      {% else %} bg-blue-500 {% endif %} shadow-md">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+
+   <!-- Main Content -->
+  <main class="flex-1   ">
+    {% block home_content %}
+    <!-- Page-specific content goes here -->
+    {% endblock %}
+  </main>
+
+  <!-- Main Content -->
+  <main class="flex-1 container mx-auto px-6 ">
+    {% block content %}
+    <!-- Page-specific content goes here -->
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-300/40 backdrop-blur-md shadow-inner mt-auto py-6">
+    <div class="container mx-auto text-center text-gray-700">
+      <p>&copy; {{ year }} E-Learning Platform. All rights reserved.</p>
+      <div class="mt-2 flex flex-wrap justify-center gap-4">
+        <a href="#" class="hover:text-teal-700 transition">Privacy Policy</a>
+        <a href="#" class="hover:text-teal-700 transition">Terms of Service</a>
+        <a href="#" class="hover:text-teal-700 transition">Contact</a>
+        <a href="#" class="hover:text-teal-700 transition">FAQ</a>
+        <a href="#" class="hover:text-teal-700 transition">Support</a>
+      </div> 
+    </div>
+  </footer>
+
+</body>
+</html>

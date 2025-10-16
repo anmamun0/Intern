@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Chapter | E-Learning{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Add Chapter</h1>
+            <p class="mt-2 text-gray-600">Course: <span class="font-semibold">{{ course.title }}</span></p>
+        </div>
+
+        <!-- Chapter Form -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <form method="POST" action="{% url 'create_chapter' course.id %}">
+                {% csrf_token %}
+                
+                <div class="space-y-6">
+                    <!-- Chapter Title -->
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                            Chapter Title *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="title"
+                            name="title"
+                            required
+                            maxlength="255"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter chapter title">
+                    </div>
+
+                    <!-- Chapter Description -->
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                            Chapter Description *
+                        </label>
+                        <textarea 
+                            id="description"
+                            name="description"
+                            required
+                            maxlength="500"
+                            rows="4"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Describe this chapter..."></textarea>
+                        <p class="mt-2 text-sm text-gray-500">Maximum 500 characters</p>
+                    </div>
+
+                    <!-- Chapter Order -->
+                    <div>
+                        <label for="order" class="block text-sm font-medium text-gray-700 mb-2">
+                            Chapter Order *
+                        </label>
+                        <input 
+                            type="number" 
+                            id="order"
+                            name="order"
+                            required
+                            min="1"
+                            value="{{ next_order }}"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="1">
+                        <p class="mt-2 text-sm text-gray-500">Suggested order: {{ next_order }}</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-4 pt-4">
+                        <a 
+                            href="{% url 'course_detail' course.id %}"
+                            class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            Cancel
+                        </a>
+                        <button 
+                            type="submit"
+                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            Add Chapter
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Existing Chapters -->
+        {% if course.chapters.all %}
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Existing Chapters</h2>
+            <div class="space-y-2">
+                {% for chapter in course.chapters.all %}
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <span class="font-medium text-gray-900">{{ chapter.order }}. {{ chapter.title }}</span>
+                        <p class="text-sm text-gray-600">{{ chapter.contents.count }} content(s)</p>
+                    </div>
+                    <a 
+                        href="{% url 'create_content' chapter.id %}"
+                        class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition">
+                        Add Content
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

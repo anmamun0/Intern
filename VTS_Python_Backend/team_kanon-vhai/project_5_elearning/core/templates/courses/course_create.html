@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Create Course</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+function addChapterForm() {
+    const container = document.getElementById('chapter-formset');
+    const totalForms = document.getElementById('id_chapters-TOTAL_FORMS');
+    const formNum = parseInt(totalForms.value);
+    const firstForm = container.querySelector('.chapter-form');
+    const newForm = firstForm.cloneNode(true);
+
+    // Reset inputs and reindex
+    newForm.querySelectorAll('input, textarea').forEach(input => {
+        if (input.name.includes('title') || input.name.includes('description') || input.name.includes('order')) {
+            input.value = '';
+            input.name = input.name.replace(/chapters-\d+/, `chapters-${formNum}`);
+            input.id = input.id.replace(/id_chapters-\d+/, `id_chapters-${formNum}`);
+        }
+    });
+
+    // Reset content inputs
+    const contents = newForm.querySelectorAll('.content-block input');
+    contents.forEach(i => i.value='');
+
+    container.appendChild(newForm);
+    totalForms.value = formNum + 1;
+}
+
+function removeForm(button) {
+    const form = button.closest('.chapter-form');
+    const totalForms = document.getElementById('id_chapters-TOTAL_FORMS');
+    if (document.querySelectorAll('.chapter-form').length > 1) {
+        form.remove();
+        totalForms.value = parseInt(totalForms.value) - 1;
+    }
+}
+
+function addContent(button) {
+    const contentContainer = button.previousElementSibling;
+    const newContent = contentContainer.children[0].cloneNode(true);
+    newContent.querySelectorAll('input').forEach(i=>i.value='');
+    contentContainer.appendChild(newContent);
+}
+
+function removeContent(button) {
+    const contentBlock = button.closest('.content-block');
+    if (contentBlock.parentElement.children.length > 1) {
+        contentBlock.remove();
+    }
+}
+</script>
+</head>
+<body class="bg-gray-100 min-h-screen py-10">
+<div class="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+<h1 class="text-2xl font-bold text-indigo-600 mb-6">Create Course</h1>
+
+<form method="POST">
+  {% csrf_token %}
+
+  <div class="space-y-4 border-b pb-6 mb-6">
+    <h2 class="text-xl font-semibold text-gray-700">Course Info</h2>
+    {{ course_form.non_field_errors }}
+    {% for field in course_form %}
+      <div>
+        {{ field.label_tag }} {{ field }}
+        {% if field.errors %}<p class="text-red-500 text-sm">{{ field.errors }}</p>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="space-y-6">
+    <h2 class="text-xl font-semibold text-gray-700 mb-3">Chapters</h2>
+    {{ chapter_formset.non_form_errors }}
+    {{ chapter_formset.management_form }}
+    <div id="chapter-formset" class="space-y-6">
+      {% for form in chapter_formset %}
+      <div class="bg-gray-300/50  chapter-form border border-gray-200 rounded-xl p-4 relative">
+        {{ form.non_field_errors }}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {% for field in form %}
+            <div>
+              {{ field.label_tag }} {{ field }}
+              {% if field.errors %}<p class="text-red-500 text-sm">{{ field.errors }}</p>{% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" onclick="removeForm(this)" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm">✕</button>
+
+        <div class="mt-4 border-t pt-4">
+          <h3 class="text-gray-600 font-semibold mb-2">Contents</h3>
+          <div class="content-container space-y-3">
+            <div class="content-block grid grid-cols-1 md:grid-cols-3 gap-4 border p-3 rounded-lg">
+              <input type="text" name="chapter-{{ forloop.counter0 }}-content-title" placeholder="Content Title" class="border-gray-300 rounded-lg p-2">
+              <input type="url" name="chapter-{{ forloop.counter0 }}-content-video" placeholder="Video URL" class="border-gray-300 rounded-lg p-2">
+              <input type="number" name="chapter-{{ forloop.counter0 }}-content-order" placeholder="Order" class="border-gray-300 rounded-lg p-2">
+              <button type="button" onclick="removeContent(this)" class="text-red-500 hover:text-red-700 text-sm">Remove</button>
+            </div>
+          </div>
+          <button type="button" onclick="addContent(this)" class="mt-2 px-3 py-1 bg-indigo-500 text-white rounded-xl text-sm hover:bg-indigo-600">+ Add Content</button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button type="button" onclick="addChapterForm()" class="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition">+ Add Chapter</button>
+  </div>
+
+  <div class="mt-8 flex justify-end">
+    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition">Save Course</button>
+  </div>
+</form>
+</div>
+</body>
+</html>
