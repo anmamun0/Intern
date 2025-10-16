@@ -11,11 +11,11 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializers
     queryset = User.objects.all()
 
-    input_data = {'id': 2, 'name': 'Rahim', 'age': 20}
+    input_data = {'id': 2, 'name': 'Rahim', 'age': 2}
 
     serializer = StudentSerializer(data=input_data)
     if serializer.is_valid():
         print("This is data ->",serializer.data)
         print("This is ->",serializer.validated_data)
     else:
-        print("error")
+        print(serializer.errors)
