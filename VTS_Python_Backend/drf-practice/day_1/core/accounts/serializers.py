@@ -6,3 +6,10 @@ class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username','first_name','last_name','password','email','bio','designation']
+
+ 
+
+class StudentSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField(max_length=100)
+    age = serializers.IntegerField()
