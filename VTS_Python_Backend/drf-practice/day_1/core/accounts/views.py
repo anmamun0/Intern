@@ -10,13 +10,17 @@ from .models import Student
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from rest_framework.views import APIView
+
 
 
 class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializers
     queryset = User.objects.all()
  
+
+# --------------------------------------------
+# RESTView - Function Base  - Custom Create [GET,POST,PUT,PATCH,DELETE,HEAD]
+# --------------------------------------------
 @api_view(['GET', 'POST','PUT'])
 def students(request):
     if request.method == 'GET':
@@ -31,7 +35,6 @@ def students(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def student_detail(request, pk):
     try:
@@ -55,7 +58,14 @@ def student_detail(request, pk):
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+
+
+# --------------------------------------------
+# RESTView - APIView - Custom Create [GET,POST,PUT,PATCH,DELETE,HEAD]
+# --------------------------------------------
 from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
 
 
 class StudentAPIView(APIView): 
@@ -108,3 +118,15 @@ class StudentAPIView(APIView):
     
     def delete(self, request, pk):
         pass
+
+
+
+from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
+# --------------------------------------------
+# RESTView - ModelViewSet - Auto Maintain [GET,POST,PUT,PATCH,DELETE,HEAD]
+# --------------------------------------------
+
+ 
+class StudentModelView(ModelViewSet):
+    pass 
+
