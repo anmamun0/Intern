@@ -58,8 +58,7 @@ def student_detail(request, pk):
 from django.shortcuts import get_object_or_404
 
 
-class StudentAPIView(APIView):
-    
+class StudentAPIView(APIView): 
     def get(self,request,pk=None):
         if pk is not None: 
             student = get_object_or_404(Student, pk=pk)
@@ -84,4 +83,17 @@ class StudentAPIView(APIView):
             "count": Student.objects.count(),
             "results": serializer.data
         })
+    def post(self, request):
+        serializer = StudentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    def put(self, request, pk):
+        student = Student.objects.get(pk=pk)
+        serializer = StudentSerializer(student, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"msg": "Student updated successfully", "data": serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
