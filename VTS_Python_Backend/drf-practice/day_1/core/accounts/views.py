@@ -11,7 +11,7 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializers
     queryset = User.objects.all()
 
-    input_data = {'id': 2, 'name': 'Rahim', 'age': 2}
+    input_data = {'id': 2, 'name': 'Rahim', 'age': 20}
 
 
     serializer = StudentSerializer(data=input_data)
