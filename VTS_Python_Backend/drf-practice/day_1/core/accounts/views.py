@@ -97,3 +97,14 @@ class StudentAPIView(APIView):
             serializer.save()
             return Response({"msg": "Student updated successfully", "data": serializer.data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        student = Student.objects.get(pk=pk)
+        serializer = StudentSerializer(student, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"msg": "Student partially updated", "data": serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        pass
