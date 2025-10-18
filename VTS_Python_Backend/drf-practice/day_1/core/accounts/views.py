@@ -6,17 +6,18 @@ from .models import CustomUser
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from .models import Student
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializers
     queryset = User.objects.all()
+ 
 
-    input_data = {'id': 2, 'name': 'Rahim', 'age': 20}
-
-
-    serializer = StudentSerializer(data=input_data)
-    if serializer.is_valid():
-        print("This is data ->",serializer.data)
-        print("This is ->",serializer.validated_data)
-    else:
-        print(serializer.errors)
+@api_view(['GET'])
+def test(request):
+    students = Student.objects.all()
+    serializer = StudentSerializer(students, many=True)
+    print("This is data ->", serializer.data)
+    return Response(serializer.data)
