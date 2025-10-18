@@ -27,6 +27,15 @@ class StudentSerializer(serializers.ModelSerializer):
             if "name" in self.fields:
                 self.fields["name_bd"] = self.fields.pop("name")
 
+    def create(self, validated_data):
+        links_data = validated_data.pop('links', [])
+        student = Student.objects.create(**validated_data)
+        
+        for link_data in links_data:
+            link = Links.objects.create(**link_data) 
+            student.links.add(link)
+        
+        return student
 
 # class StudentSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
