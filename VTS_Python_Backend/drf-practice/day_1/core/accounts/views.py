@@ -59,6 +59,7 @@ from django.shortcuts import get_object_or_404
 
 
 class StudentAPIView(APIView):
+    
     def get(self,request,pk=None):
         if pk is not None: 
             student = get_object_or_404(Student, pk=pk)
@@ -68,9 +69,9 @@ class StudentAPIView(APIView):
         qs = Student.objects.all()
         serializer = StudentSerializer(qs,many=True)
         return Response(serializer.data)
-    
+        
     # with pagination GET Request : Option
-    def get(self, request):
+    def get(self, request, pk=None):
         page = int(request.query_params.get('page', 1))  
         limit = 5
         start = (page - 1) * limit
@@ -83,3 +84,4 @@ class StudentAPIView(APIView):
             "count": Student.objects.count(),
             "results": serializer.data
         })
+    
