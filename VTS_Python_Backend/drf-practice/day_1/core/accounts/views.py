@@ -16,8 +16,8 @@ class UserView(viewsets.ModelViewSet):
  
 
 @api_view(['GET'])
-def test(request):
+def students(request):
     students = Student.objects.all()
-    serializer = StudentSerializer(students, many=True)
+    serializer = StudentSerializer(students, many=True,context={'request':request})
     print("This is data ->", serializer.data)
     return Response(serializer.data)

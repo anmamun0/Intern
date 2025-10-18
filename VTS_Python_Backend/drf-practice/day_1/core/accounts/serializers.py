@@ -18,6 +18,14 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ["id",'name','age','links']
+        
+    def __init__(self, *args, **kwargs): 
+        super().__init__(*args, **kwargs)
+
+        request = self.context.get("request")
+        if request and request.query_params.get("lang") == "bn":
+            if "name" in self.fields:
+                self.fields["name_bd"] = self.fields.pop("name")
 
 
 # class StudentSerializer(serializers.Serializer):
