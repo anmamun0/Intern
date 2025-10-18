@@ -13,6 +13,7 @@ class UserView(viewsets.ModelViewSet):
 
     input_data = {'id': 2, 'name': 'Rahim', 'age': 2}
 
+
     serializer = StudentSerializer(data=input_data)
     if serializer.is_valid():
         print("This is data ->",serializer.data)

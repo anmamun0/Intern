@@ -7,6 +7,7 @@ class UserSerializers(serializers.ModelSerializer):
         model = User
         fields = ['username','first_name','last_name','password','email','bio','designation']
  
+ 
 class StudentSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField(max_length=100)
@@ -16,3 +17,6 @@ class StudentSerializer(serializers.Serializer):
         if value < 10: 
             raise serializers.ValidationError("you are a child! go to heal")
         pass
+    
+    def get_just_check(self,obj):
+        return f"{obj.bio} - {obj.designation}"
