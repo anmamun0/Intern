@@ -36,7 +36,20 @@ class StudentSerializer(serializers.ModelSerializer):
             student.links.add(link)
         
         return student
+    
+    def update(self, instance, validated_data):
+        links_data = validated_data.pop('links', None)
+        instance.name = validated_data.get('name', instance.name)
+        instance.age = validated_data.get('age', instance.age)
+        instance.save()
 
+        if links_data is not None:
+            instance.links.all().delete()
+            for link_data in links_data:
+                Links.objects.create(student=instance, **link_data)
+        return instance
+    
+    
 # class StudentSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
 #     name = serializers.CharField(max_length=100)
