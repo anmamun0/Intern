@@ -10,6 +10,8 @@ from .models import Student
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.views import APIView
+
 
 class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializers
@@ -53,3 +55,31 @@ def student_detail(request, pk):
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+from django.shortcuts import get_object_or_404
+
+
+class StudentAPIView(APIView):
+    def get(self,request,pk=None):
+        if pk is not None: 
+            student = get_object_or_404(Student, pk=pk)
+            serializer = StudentSerializer(student)
+            return Response(serializer.data)
+        
+        qs = Student.objects.all()
+        serializer = StudentSerializer(qs,many=True)
+        return Response(serializer.data)
+    
+    # with pagination GET Request : Option
+    def get(self, request):
+        page = int(request.query_params.get('page', 1))  
+        limit = 5
+        start = (page - 1) * limit
+        end = page * limit
+
+        students = Student.objects.all()[start:end]
+        serializer = StudentSerializer(students, many=True)
+        return Response({
+            "page": page,
+            "count": Student.objects.count(),
+            "results": serializer.data
+        })

@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
 from .models import Student,Links
 class UserSerializers(serializers.ModelSerializer):
@@ -11,7 +13,7 @@ class UserSerializers(serializers.ModelSerializer):
 class LinksSerializers(serializers.ModelSerializer):
     class Meta:
         model  = Links
-        fields = "__all__" 
+        fields = ['platform','url'] 
 
 class StudentSerializer(serializers.ModelSerializer):
     links = LinksSerializers(many=True)
@@ -49,7 +51,7 @@ class StudentSerializer(serializers.ModelSerializer):
                 Links.objects.create(student=instance, **link_data)
         return instance
     
-    
+
 # class StudentSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
 #     name = serializers.CharField(max_length=100)
