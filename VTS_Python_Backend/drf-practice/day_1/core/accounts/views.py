@@ -122,17 +122,28 @@ class StudentAPIView(APIView):
 # ----------------------------------------------------
 # RESTView - Custom CRUD ViewSet - [list, retrieve, create, update,partial_update, delete]
 # ----------------------------------------------------
+from rest_framework import viewsets
+from rest_framework.decorators import action
+ 
 
-class StudentViewSet(viewsets.ViewSet):
+class StudentViewSet(viewsets.ViewSet): 
     # /students/  >> return will all data
     def list(self, request):
         students = Student.objects.all()
         serializer = StudentSerializer(students, many=True)
         return Response(serializer.data)
+    
+    # Custom Action
+    @action(detail=False, methods=['get'])
+    def top_students(self, request):
+        students = Student.objects.filter(age__gte=20)[:1]
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data)
+    
 
     # retrieve()  >> /students/<id>/ return will selected data
     def retrieve(self, request, pk=None):
-        student = Student.objects.get(pk=pk)
+        student = Student.objects.get(pk=pk) 
         serializer = StudentSerializer(student)
         return Response(serializer.data)
  
@@ -144,11 +155,7 @@ class StudentViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
     
     def update(self, request, pk=None):
-        try:
-            student = Student.objects.get(pk=pk)
-        except Student.DoesNotExist:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+        student = Student.objects.get(pk=pk) 
         serializer = StudentSerializer(student, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -156,11 +163,7 @@ class StudentViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
     def partial_update(self, request, pk=None):
-        try:
-            student = Student.objects.get(pk=pk)
-        except Student.DoesNotExist:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+        student = Student.objects.get(pk=pk) 
         serializer = StudentSerializer(student, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -168,11 +171,7 @@ class StudentViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
     def destroy(self, request, pk=None):
-        try:
-            student = Student.objects.get(pk=pk)
-        except Student.DoesNotExist:
-            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+        student = Student.objects.get(pk=pk) 
         student.delete()
         return Response({'msg': 'Student deleted successfully'}, status=status.HTTP_204_NO_CONTENT) 
         
@@ -182,8 +181,7 @@ from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
 # RESTView - ModelViewSet - Auto Maintain [GET,POST,PUT,PATCH,DELETE,HEAD] and Auto Create url endpoint
 # ModelSerializer + queryset + CRUD method all auto built-in 
 # --------------------------------------------
-
-
+ 
 class StudentModelView(ModelViewSet):
     pass 
 

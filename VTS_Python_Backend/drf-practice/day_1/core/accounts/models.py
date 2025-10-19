@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
- 
+from django.contrib.auth import get_user_model
 
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True)  
@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     
 
 class Student(models.Model):
+
     name = models.CharField(max_length=150)
     age = models.IntegerField()
 
