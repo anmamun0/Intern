@@ -167,6 +167,15 @@ class StudentViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
+    def destroy(self, request, pk=None):
+        try:
+            student = Student.objects.get(pk=pk)
+        except Student.DoesNotExist:
+            return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        student.delete()
+        return Response({'msg': 'Student deleted successfully'}, status=status.HTTP_204_NO_CONTENT) 
+        
 
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
 # --------------------------------------------
