@@ -124,9 +124,25 @@ class StudentAPIView(APIView):
 # ----------------------------------------------------
 from rest_framework import viewsets
 from rest_framework.decorators import action
- 
+from rest_framework.permissions import BasePermission
+from rest_framework.exceptions import NotAuthenticated, PermissionDenied
 
-class StudentViewSet(viewsets.ViewSet): 
+class IsOwnerOfStudent(BasePermission):
+    # Request → has_permission → (if True) → view method (list/retrieve/create...)
+    # Request → has_permission → view method (retrieve/update/destroy) → get_object → has_object_permission → action on object
+    def has_object_permission(self, request, view, obj):
+        if not request.user or not request.user.is_authenticated:
+            raise NotAuthenticated(detail={"error": "Login first"})
+
+        if request.method in ['GET']:
+            return True
+        
+        if obj.name != request.user.username:
+            raise PermissionDenied(detail={"error": "You are not the owner of this student"})
+        return True
+
+class StudentViewSet(viewsets.ViewSet):
+    permission_classes = [IsOwnerOfStudent]
     # /students/  >> return will all data
     def list(self, request):
         students = Student.objects.all()
@@ -140,10 +156,10 @@ class StudentViewSet(viewsets.ViewSet):
         serializer = StudentSerializer(students, many=True)
         return Response(serializer.data)
     
-
     # retrieve()  >> /students/<id>/ return will selected data
     def retrieve(self, request, pk=None):
-        student = Student.objects.get(pk=pk) 
+        student = Student.objects.get(pk=pk)
+        self.check_object_permissions(request, student)
         serializer = StudentSerializer(student)
         return Response(serializer.data)
  
@@ -155,7 +171,9 @@ class StudentViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
     
     def update(self, request, pk=None):
-        student = Student.objects.get(pk=pk) 
+        student = Student.objects.get(pk=pk)
+        self.check_object_permissions(request, student)
+        
         serializer = StudentSerializer(student, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -163,7 +181,8 @@ class StudentViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
     def partial_update(self, request, pk=None):
-        student = Student.objects.get(pk=pk) 
+        student = Student.objects.get(pk=pk)
+        self.check_object_permissions(request, student)
         serializer = StudentSerializer(student, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -171,7 +190,8 @@ class StudentViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
     def destroy(self, request, pk=None):
-        student = Student.objects.get(pk=pk) 
+        student = Student.objects.get(pk=pk)
+        self.check_object_permissions(request, student)
         student.delete()
         return Response({'msg': 'Student deleted successfully'}, status=status.HTTP_204_NO_CONTENT) 
         
