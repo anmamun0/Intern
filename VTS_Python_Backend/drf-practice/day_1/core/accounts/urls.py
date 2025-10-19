@@ -1,9 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UserView,students,student_detail,StudentAPIView
+from .views import UserView,students,student_detail,StudentAPIView,StudentViewSet
 
 router = DefaultRouter()
-router.register('user', UserView)
+router.register('user', UserView, basename='user')
+router.register('students-viewset', StudentViewSet, basename='students')
+
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -11,5 +13,6 @@ urlpatterns = [
     path('students/<int:pk>/', student_detail),  
     path('api/student/',StudentAPIView.as_view(),name="studentapi"),
     path('api/student/<int:pk>/', StudentAPIView.as_view(), name='student-detail'),
+    
 
 ]

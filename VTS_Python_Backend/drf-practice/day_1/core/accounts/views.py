@@ -119,14 +119,21 @@ class StudentAPIView(APIView):
     def delete(self, request, pk):
         pass
 
+# ----------------------------------------------------
+# RESTView - Custom CRUD ViewSet - [list, retrieve, create, update, delete]
+# ----------------------------------------------------
 
+class StudentViewSet(viewsets.ViewSet):
+    # /students/  >> return will all data
+    def list(self, request):
+        students = Student.objects.all()
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data)
 
-from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-# --------------------------------------------
-# RESTView - ModelViewSet - Auto Maintain [GET,POST,PUT,PATCH,DELETE,HEAD]
-# --------------------------------------------
+    # retrieve()  >> /students/<id>/ return will selected data
+    def retrieve(self, request, pk=None):
+        student = Student.objects.get(pk=pk)
+        serializer = StudentSerializer(student)
+        return Response(serializer.data)
 
- 
-class StudentModelView(ModelViewSet):
-    pass 
 
