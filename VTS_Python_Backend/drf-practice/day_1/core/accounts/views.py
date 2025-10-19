@@ -198,9 +198,11 @@ from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
 # RESTView - ModelViewSet - Auto Maintain [GET,POST,PUT,PATCH,DELETE,HEAD] and Auto Create url endpoint
 # ModelSerializer + queryset + CRUD method all auto built-in 
 # --------------------------------------------
- 
+from .permissions import ReadOnlyPermission
 class StudentModelView(ModelViewSet):
-    pass 
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    permission_classes = [ReadOnlyPermission]
 
 
 

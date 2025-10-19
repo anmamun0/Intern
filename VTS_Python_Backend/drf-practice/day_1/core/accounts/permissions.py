@@ -22,3 +22,21 @@ DjangoModelPermissionsOrAnonReadOnly    #  just can access view_model ,
 
 
 
+from rest_framework.permissions import BasePermission
+
+# Just get Method allow
+class ReadOnlyPermission(BasePermission):
+    def has_permission(self, request, view):  
+        print(view.__class__.__name__)   #  View class name
+        print(view.action)               #  'list', 'retrieve', 'create'
+        print(view.queryset)            
+        return request.method in ['GET']
+
+ 
+class IsOwner(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        # Just get Method allow
+        if request.method in ['GET']:
+            return True
+        # Checking the current data is owner the reqest user
+        return obj.user == request.user
