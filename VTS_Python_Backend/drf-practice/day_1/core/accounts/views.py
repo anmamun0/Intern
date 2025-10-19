@@ -120,7 +120,7 @@ class StudentAPIView(APIView):
         pass
 
 # ----------------------------------------------------
-# RESTView - Custom CRUD ViewSet - [list, retrieve, create, update, delete]
+# RESTView - Custom CRUD ViewSet - [list, retrieve, create, update,partial_update, delete]
 # ----------------------------------------------------
 
 class StudentViewSet(viewsets.ViewSet):
@@ -135,5 +135,27 @@ class StudentViewSet(viewsets.ViewSet):
         student = Student.objects.get(pk=pk)
         serializer = StudentSerializer(student)
         return Response(serializer.data)
+ 
+    def create(self, request):
+        serializer = StudentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+
+        
+ 
+
+from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
+# --------------------------------------------
+# RESTView - ModelViewSet - Auto Maintain [GET,POST,PUT,PATCH,DELETE,HEAD] and Auto Create url endpoint
+# ModelSerializer + queryset + CRUD method all auto built-in 
+# --------------------------------------------
+
+
+class StudentModelView(ModelViewSet):
+    pass 
+
 
 
