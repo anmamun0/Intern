@@ -57,10 +57,7 @@ def student_detail(request, pk):
     elif request.method == 'DELETE':
         student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
+ 
 # --------------------------------------------
 # RESTView - APIView - Custom Create [GET,POST,PUT,PATCH,DELETE,HEAD]
 # --------------------------------------------
