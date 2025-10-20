@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UserView,students,student_detail,StudentAPIView,StudentViewSet,StudentModelView
+from .views import UserView,students,student_detail,StudentAPIView,StudentViewSet,StudentModelView,CustomTokenObtainPairView
  
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,TokenRefreshView
@@ -8,6 +8,9 @@ from rest_framework_simplejwt.views import (
 jwt_login_urls = [
     path('api/token/',TokenObtainPairView.as_view(),name="api_token"),
     path('api/token/refresh/',TokenRefreshView.as_view(),name="refresh_token"),
+    
+    # Custom JWT View
+    path('api/custom_token/',CustomTokenObtainPairView.as_view(),name="custom_api_token"),
 ]
 
 
