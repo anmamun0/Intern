@@ -19,9 +19,7 @@ add_modelname,change_modelname, delete_modelname, view_modelname
 DjangoModelPermissions                  #
 DjangoModelPermissionsOrAnonReadOnly    #  just can access view_model ,
 """
-
-
-
+ 
 from rest_framework.permissions import BasePermission
 
 # Just get Method allow
